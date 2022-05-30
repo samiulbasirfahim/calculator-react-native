@@ -6,10 +6,31 @@ export default function KeyPad({ number, setNumber, handleTriggerResult }) {
         if (number.length > 50) {
             return Alert.alert("Error", 'You cant insert more than 50 numbers');
         }
-        const lastNumber = number.slice(number.length - 1, number.length);
+        if (number.length > 0) {
+            const lastNumber = number.slice(number.length - 1, number.length);
+            const mathSign = ['+', '-', '*', '/']
+            if (mathSign.includes(lastNumber) && mathSign.includes(n)) {
+                return setNumber(number.slice(0, number.length - 1) + n);
+            }
+        }
 
         setNumber(number + "" + n);
     }
+
+
+    const handleBackspace = () => {
+        if (number.length > 0) {
+            setNumber(number.slice(0, number.length - 1));
+            if (number.length === 1) {
+                setNumber(0);
+            }
+        }
+
+    }
+    const handleAllClear = () => {
+        setNumber(0);
+    }
+
     return (
         <View style={{
             height: '70%',
@@ -31,10 +52,10 @@ export default function KeyPad({ number, setNumber, handleTriggerResult }) {
                 </View>
             </View>
             <View style={styles.keyPadButton}>
-                <Text onPress={() => Alert.alert()} style={styles.key}>{"<"}</Text>
-                <Text onPress={() => Alert.alert()} style={styles.key}>{"c"}</Text>
-                <Text onPress={() => Alert.alert()} style={styles.key}>{"="}</Text>
-                <Text onPress={() => Alert.alert()} style={styles.key}>{"0"}</Text>
+                <Text onPress={handleBackspace} style={styles.keyButton}>{"<"}</Text>
+                <Text onPress={handleAllClear} style={styles.keyButton}>{"c"}</Text>
+                <Text onPress={handleTriggerResult} style={styles.keyButton}>{"="}</Text>
+                <Text onPress={() => handleNumber(0)} style={styles.keyButton}>{"0"}</Text>
             </View>
         </View>
     )
@@ -66,6 +87,10 @@ const styles = StyleSheet.create({
     key: {
         fontSize: 30,
         color: '#5e81ac',
-        padding: 15,
+        padding: 40,
+    },
+    keyButton: {
+        fontSize: 30,
+        padding: 20,
     }
 })
